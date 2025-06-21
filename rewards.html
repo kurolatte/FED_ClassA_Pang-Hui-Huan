@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>万屋 YOROZUYA – Rewards</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="game2048.css" />
+</head>
+<body class="bg-gray-100 font-sans m-0">
+
+  <!-- Header -->
+  <header class="bg-[#333333] text-white px-5 py-3 flex items-center justify-between">
+    <!-- Logo -->
+    <div class="text-2xl font-bold">万屋 YOROZUYA</div>
+
+    <!-- Main nav -->
+    <nav class="space-x-6">
+      <a href="home.html"     class="text-sm hover:text-gray-300">Home</a>
+      <a href="products.html" class="text-sm hover:text-gray-300">Products</a>
+      <a href="rewards.html"  class="text-sm font-semibold">Rewards</a>
+      <a href="contact.html"  class="text-sm hover:text-gray-300">Contact</a>
+    </nav>
+
+    <!-- User/nav actions -->
+    <div id="userNav" class="flex items-center space-x-4">
+      <!-- login/register -->
+      <a id="loginBtn" href="login.html"
+         class="bg-white text-[#333333] px-3 py-1 rounded text-sm">Login</a>
+      <a id="registerBtn" href="register.html"
+         class="border border-white text-white px-3 py-1 rounded text-sm">Register</a>
+
+      <!-- once logged in, we swap these in -->
+      <span id="welcomeMsg" class="hidden text-white text-sm"></span>
+      <button id="logoutBtn" class="hidden text-blue-300 hover:underline text-sm">
+        Logout
+      </button>
+
+      <!-- cart -->
+      <a href="cart.html" class="relative text-white hover:text-gray-300">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+             stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 
+                   1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 
+                   2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 
+                   14.25L5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 
+                   .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 
+                   .75.75 0 0 1 1.5 0Z"/>
+        </svg>
+        <span id="cartCount"
+              class="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5
+                     flex items-center justify-center rounded-full">
+          0
+        </span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Rewards Section -->
+  <main class="py-12 px-5 text-center">
+    <h1 class="text-4xl font-bold mb-10">Rewards</h1>
+    <section class="bg-white p-8 rounded-lg shadow mx-auto max-w-lg overflow-visible">
+      <h2 class="text-2xl font-semibold mb-4">Play 2048 &amp; Earn Coupons</h2>
+
+      <!-- Start Button -->
+      <button id="start-game"
+              class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mb-4">
+        Start 2048
+      </button>
+
+      <!-- Game Area (hidden until start) -->
+      <div id="game-area" class="hidden relative">
+
+        <!-- Game container -->
+        <div class="mx-auto w-[452px] pt-[100px] relative overflow-visible">
+          <!-- Logo -->
+          <div class="absolute top-0 left-[10px] text-[60px] font-bold text-[#d13100] z-[1001] select-none">
+            2048
+          </div>
+          <!-- Score bar -->
+          <div class="absolute top-0 right-[10px] bg-white px-3 py-2 rounded flex items-center gap-2 z-[1001]">
+            <span class="text-sm">Score:</span>
+            <span id="score" class="text-[50px]">0</span>
+            <div id="addScore"
+                 class="absolute top-[4px] right-0 text-[30px] text-gray-500 opacity-0 transition-opacity">
+            </div>
+          </div>
+          <!-- Stage -->
+          <div id="stage"
+               class="bg-[#01bfae] w-[450px] h-[450px] mx-auto mb-5 border border-gray-200 relative select-none">
+            <!-- JS will inject tiles here -->
+          </div>
+        </div>
+
+        <!-- Submit Score -->
+        <button id="submit-score"
+                class="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition disabled:opacity-50"
+                disabled>
+          Submit Score
+        </button>
+      </div>
+
+      <!-- Coupon Output -->
+      <div id="coupon-box" class="hidden mt-6 inline-block bg-gray-50 p-4 rounded shadow">
+        <p id="coupon-text" class="text-lg font-medium mb-2"></p>
+        <button id="copy-coupon"
+                class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
+          Copy Code
+        </button>
+      </div>
+
+      <!-- High Scores -->
+      <div id="leaderboard" class="mt-8 mx-auto max-w-sm text-left">
+        <h3 class="text-xl font-semibold mb-2">High Scores</h3>
+        <ul id="leaderboard-list" class="list-decimal list-inside"></ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-[#333333] text-white py-20 mt-15">
+    <!-- footer content -->
+  </footer>
+
+  <!-- 1) 2048 core + rewards logic -->
+  <script src="game2048.js"></script>
+
+  <!-- 2) Define per-email play-limit helpers -->
+  <script>
+    function hasPlayedToday(email) {
+      const key   = `lastPlayDate_${email}`;
+      const last  = localStorage.getItem(key);
+      const today = new Date().toISOString().slice(0,10);
+      return last === today;
+    }
+    function markPlayedToday(email) {
+      const key   = `lastPlayDate_${email}`;
+      const today = new Date().toISOString().slice(0,10);
+      localStorage.setItem(key, today);
+    }
+  </script>
+
+  <!-- 3) Leaderboard renderer -->
+  <script>
+    function renderLeaderboard(lb) {
+      const ul = document.getElementById('leaderboard-list');
+      ul.innerHTML = '';
+      if (!lb.length) {
+        ul.innerHTML = '<li class="text-sm italic">No scores yet.</li>';
+        return;
+      }
+      lb.forEach(({email, score}) => {
+        const li = document.createElement('li');
+        li.textContent = `${email}: ${score}`;
+        li.className = 'text-sm';
+        ul.appendChild(li);
+      });
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const board = JSON.parse(localStorage.getItem('leaderboard') || '[]');
+      renderLeaderboard(board);
+    });
+  </script>
+
+  <!-- 4) Page-specific behavior (login state, cart badge, per-email limit) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // -- cart badge
+      document.getElementById('cartCount').innerText =
+        JSON.parse(localStorage.getItem('cart') || '[]').length;
+
+      // -- login/logout UI
+      const email       = localStorage.getItem('userLoggedIn');
+      const loginBtn    = document.getElementById('loginBtn');
+      const registerBtn = document.getElementById('registerBtn');
+      const welcomeMsg  = document.getElementById('welcomeMsg');
+      const logoutBtn   = document.getElementById('logoutBtn');
+      if (email) {
+        loginBtn.classList.add('hidden');
+        registerBtn.classList.add('hidden');
+        welcomeMsg.textContent = `Welcome, ${email}`;
+        welcomeMsg.classList.remove('hidden');
+        logoutBtn.classList.remove('hidden');
+        logoutBtn.onclick = () => {
+          localStorage.removeItem('userLoggedIn');
+          location.reload();
+        };
+      }
+
+      // -- start button: login & per-email once/day
+      const startBtn = document.getElementById('start-game');
+      const isAdmin  = (email === 'admin@yorozuya.com');
+      startBtn.onclick = () => {
+        if (!email) {
+          alert('Please log in to play and earn coupons.');
+          return window.location.href = 'login.html';
+        }
+        if (!isAdmin && hasPlayedToday(email)) {
+          alert('You have already played today. Come back tomorrow!');
+          return;
+        }
+        // show game
+        document.getElementById('game-area').classList.remove('hidden');
+        document.getElementById('submit-score').disabled = false;
+        // inject semi-transparent cover
+        document.querySelectorAll('.cover').forEach(c=>c.remove());
+        const cover = document.createElement('div');
+        cover.className = 'cover fixed inset-0 w-full h-full z-[999] opacity-10 pointer-events-none';
+        document.body.appendChild(cover);
+      };
+
+      // -- submit-score: record once/day, then leaderboard logic inside game2048.js
+      const submitBtn = document.getElementById('submit-score');
+      submitBtn && submitBtn.addEventListener('click', () => {
+        const email = localStorage.getItem('userLoggedIn');
+        markPlayedToday(email);
+        // the rest of your coupon & leaderboard code in game2048.js will run afterwards
+      });
+    });
+  </script>
+</body>
+</html>

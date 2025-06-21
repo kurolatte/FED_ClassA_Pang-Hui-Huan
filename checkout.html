@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>万屋 YOROZUYA – Checkout</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+
+  <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
+    <!-- Heading -->
+    <h2 class="text-xl font-semibold mb-1">Shipping information</h2>
+    <p class="text-gray-600 mb-6">We ship within 2 working days</p>
+
+    <!-- FORM -->
+    <form action="payment.html" method="get" class="space-y-4">
+      <!-- Full Name -->
+      <div>
+        <label for="fullName" class="block text-sm font-medium text-gray-700">
+          Full Name
+        </label>
+        <input
+          type="text"
+          id="fullName"
+          name="fullName"
+          placeholder="Enter your full name"
+          required
+          class="mt-1 block w-full border border-gray-300 rounded px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <!-- Location -->
+      <div>
+        <label for="location" class="block text-sm font-medium text-gray-700">
+          Location
+        </label>
+        <input
+          type="text"
+          id="location"
+          name="location"
+          placeholder="Enter your address"
+          required
+          class="mt-1 block w-full border border-gray-300 rounded px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <!-- Delivery Note -->
+      <div>
+        <label for="deliveryNote" class="block text-sm font-medium text-gray-700">
+          Delivery note
+        </label>
+        <textarea
+          id="deliveryNote"
+          name="deliveryNote"
+          rows="3"
+          placeholder="Any special instructions?"
+          class="mt-1 block w-full border border-gray-300 rounded px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        ></textarea>
+      </div>
+
+      <!-- Terms Checkbox -->
+      <div class="flex items-center">
+        <input
+          id="terms"
+          name="terms"
+          type="checkbox"
+          required
+          class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+        />
+        <label for="terms" class="ml-2 text-sm text-gray-700">
+          I accept the
+          <a href="terms.html"
+             target="_blank"
+             class="text-blue-600 underline hover:text-blue-800">
+            Terms & Conditions
+          </a>
+        </label>
+      </div>
+
+      <!-- Confirm Button -->
+      <button
+        type="submit"
+        class="w-full bg-black text-white py-2 rounded text-sm font-medium
+               hover:bg-gray-800 transition"
+      >
+        Confirm
+      </button>
+    </form>
+  </div>
+
+</body>
+</html>

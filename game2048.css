@@ -1,0 +1,42 @@
+#stage {
+  position: relative;
+}
+
+/* base tile styling */
+#stage span {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+  user-select: none;
+  background: #fff;
+  border-radius: 4px;
+  z-index: 10;
+  transition: all .2s ease;
+  font-weight: bold;
+}
+
+/* grid coordinates */
+.row0 { top: 10px; }
+.row1 { top: 120px; }
+.row2 { top: 230px; }
+.row3 { top: 340px; }
+.cell0 { left: 10px; }
+.cell1 { left: 120px; }
+.cell2 { left: 230px; }
+.cell3 { left: 340px; }
+
+/* tile colors & font sizes */
+.num2    { background: #fff;    color:#ee4747;font-size:100px; }
+.num4    { background: #fafafa; color:#f5a030;font-size:100px; }
+.num8    { background: #f3f3f3; color:#f1c531;font-size:100px; }
+.num16   { background: #F5EC00; color:#32ce3f;font-size:80px;  }
+.num32   { background: #fcc20e; color:#237bee;font-size:80px;  }
+.num64   { background: #f94a3b; color:#5f67ca;font-size:80px;  }
+.num128  { background: #222;    color:#154ce6;font-size:52px;  }
+.num256  { background: #d13100; color:#ffcc66;font-size:52px;  }
+.num512  { background: #fff300; color:#FB4E4E;font-size:52px;  }
+.num1024 { background: #6483b5; color:#db7019;font-size:40px;  }
+.num2048 { background: #000000; color:#9c67c0;font-size:40px;  }
+.num4096 { background: #ff0099; color:#1dcdd3;font-size:40px;  }

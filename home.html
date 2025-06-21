@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>万屋 YOROZUYA – Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="app.js"></script>
+  <style>
+    body.home-bg {
+      background: url('Yorozuya gintama shop house.png');
+      background-position: center top;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+  </style>
+</head>
+<body class="home-bg font-sans m-0 flex flex-col min-h-screen text-white">
+
+  <!-- HEADER -->
+  <header class="bg-[#333333]/80 px-5 py-3 flex items-center justify-between">
+    <div class="text-2xl font-bold">万屋 YOROZUYA</div>
+    <nav class="space-x-6">
+      <a href="home.html"     class="text-sm hover:text-gray-300">Home</a>
+      <a href="products.html" class="text-sm hover:text-gray-300">Products</a>
+      <a href="rewards.html"  class="text-sm hover:text-gray-300">Rewards</a>
+      <a href="contact.html"  class="text-sm hover:text-gray-300">Contact</a>
+    </nav>
+    <div class="flex items-center space-x-4">
+      <a id="loginBtn" href="login.html"
+         class="bg-white text-[#333333] px-3 py-1 rounded text-sm">
+         Login
+      </a>
+      <a id="registerBtn" href="register.html"
+         class="border border-white text-white px-3 py-1 rounded text-sm">
+         Register
+      </a>
+      <a href="cart.html" class="relative text-white hover:text-gray-300">
+        <!-- cart svg omitted -->
+        <span id="cartCount"
+              class="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5
+                     flex items-center justify-center rounded-full">
+          0
+        </span>
+      </a>
+    </div>
+  </header>
+
+  <!-- empty flex-grow for visual balance -->
+  <main class="flex-grow min-h-[60vh]"></main>>
+
+  <!-- FOOTER (always at bottom) -->
+  <footer class="bg-[#333333] text-white py-10 px-5">
+    <h2 class="text-2xl font-bold mb-6">About 万屋 YOROZUYA</h2>
+    <div class="space-y-4 max-w-3xl mx-auto">
+      <p>
+        Inspired by the hit anime <em>Gintama</em>, we adopted the 万事屋 (Yorozuya)—the
+        “house of myriad jobs”—and made it real. 万 (yorozu) literally means “10,000,”
+        but more importantly “everything under the sky.” At Yorozuya, we do any job
+        (for a fair fee) and sell anything you can imagine.
+      </p>
+      <p>
+        Founded in 20XX by a odd-job enthusiasts, who started out fetching
+        groceries, repairing gadgets, and sourcing rare anime merchandise. Word spread:
+        whether you need event staffing at the last minute, a custom cosplay prop,
+        or a simple errand run, you bring the request—we bring the results.
+      </p>
+      <p>
+        Our name, 万屋, isn’t just branding; it’s a promise:
+        <em>“You need it done, we’ll do it—and you need it found, we’ll find it.”</em>
+      </p>
+      <p>
+        Explore our site to browse the latest products, join our rewards program,
+        or drop us a wild request—because at 万屋 YOROZUYA, truly
+        <strong>anything under the sky</strong> is just a click away.
+      </p>
+    </div>
+  </footer>
+
+  <!-- CART COUNT & LOGIN-STATE SCRIPT -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // cart badge
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      document.getElementById('cartCount').innerText = cart.length;
+
+      // login/logout toggle
+      const email       = localStorage.getItem('userLoggedIn');
+      const loginBtn    = document.getElementById('loginBtn');
+      const registerBtn = document.getElementById('registerBtn');
+      if (email) {
+        loginBtn .classList.add('hidden');
+        registerBtn.classList.add('hidden');
+        const wrapper = loginBtn.parentNode;
+        const span    = document.createElement('span');
+        span.className = 'text-white text-sm flex items-center space-x-2';
+        span.innerHTML = `
+          <span>Welcome, ${email}</span>
+          <button id="logoutBtn" class="text-blue-300 hover:underline text-sm">Logout</button>
+        `;
+        wrapper.insertBefore(span, wrapper.querySelector('a[href="cart.html"]'));
+        document.getElementById('logoutBtn').onclick = () => {
+          localStorage.removeItem('userLoggedIn');
+          location.reload();
+        };
+      }
+    });
+  </script>
+</body>
+</html>

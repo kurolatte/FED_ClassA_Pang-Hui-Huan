@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>万屋 YOROZUYA – Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans m-0 flex items-center justify-center h-screen">
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
+    <h1 class="text-2xl font-bold mb-6 text-center">Sign In</h1>
+    <form id="loginForm" class="space-y-4">
+      <div>
+        <label for="email" class="block text-sm font-medium">Email</label>
+        <input id="email" type="email" required
+               class="mt-1 w-full border border-gray-400 rounded px-3 py-2 bg-white 
+         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"/>
+      </div>
+      <div>
+        <label for="password" class="block text-sm font-medium">Password</label>
+        <input id="password" type="password" required
+               class="mt-1 w-full border border-gray-400 rounded px-3 py-2 bg-white 
+         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"/>
+      </div>
+      <p id="errorMsg" class="text-red-600 text-sm"></p>
+      <button type="submit"
+              class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">
+        Log In
+      </button>
+      <p class="text-center text-sm">
+        Don’t have an account?
+        <a href="register.html" class="text-blue-600 hover:underline">Register</a>
+      </p>
+    </form>
+  </div>
+
+  <script>
+    // === ADMIN CREDENTIALS ===
+    const ADMIN_EMAIL = 'admin@yorozuya.com';
+    const ADMIN_PW    = 'Admin123'
+
+    document.getElementById('loginForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const pw    = document.getElementById('password').value;
+      const err   = document.getElementById('errorMsg');
+      err.textContent = '';
+
+      // 1) Admin shortcut
+      if (email === ADMIN_EMAIL && pw === ADMIN_PW) {
+        localStorage.setItem('userLoggedIn', email);
+        return window.location.href = 'products.html';
+      }
+
+      // 2) Normal user lookup
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const user  = users.find(u => u.email === email && u.password === pw);
+      if (!user) {
+        err.textContent = 'Invalid email or password.';
+        return;
+      }
+
+      // successful login
+      localStorage.setItem('userLoggedIn', email);
+      window.location.href = 'products.html';
+    });
+  </script>
+</body>
+</html>

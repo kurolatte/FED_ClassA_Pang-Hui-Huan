@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>万屋 YOROZUYA – Products</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="app.js"></script>
+</head>
+<body class="bg-[#5A5A5A] font-sans m-0">
+
+  <!-- Header -->
+  <header class="bg-[#434343] text-white px-5 py-3 flex items-center justify-between">
+    <div class="text-2xl font-bold">万屋 YOROZUYA</div>
+    <nav class="space-x-6">
+      <a href="home.html"     class="text-sm hover:text-gray-300">Home</a>
+      <a href="products.html" class="text-sm font-semibold">Products</a>
+      <a href="rewards.html"  class="text-sm hover:text-gray-300">Rewards</a>
+      <a href="contact.html"  class="text-sm hover:text-gray-300">Contact</a>
+    </nav>
+    <div class="flex items-center space-x-4 relative">
+      <!-- mark these for script -->
+      <a id="loginBtn" href="login.html"
+         class="bg-white text-[#333333] px-3 py-1 rounded text-sm inline-block">
+         Login
+      </a>
+      <a id="registerBtn" href="register.html"
+         class="border border-white text-white px-3 py-1 rounded text-sm inline-block">
+         Register
+      </a>
+
+      <!-- Cart Icon + Badge -->
+      <a href="cart.html" class="relative text-white hover:text-gray-300">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke-width="1.5"
+             stroke="currentColor"
+             class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 
+                   1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 
+                   2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 
+                   14.25L5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 
+                   .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 
+                   .75.75 0 0 1 1.5 0Z"/>
+        </svg>
+        <span id="cartCount"
+              class="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5
+                     flex items-center justify-center rounded-full">
+          0
+        </span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Products Listing -->
+  <main class="py-12 px-5">
+    <h1 class="text-4xl font-bold text-center bg-white py-8">PRODUCTS</h1>
+    <div class="max-w-7xl mx-auto flex gap-8 mt-8">
+
+      <!-- Sidebar Filters (unchanged) -->
+      <aside class="w-64 bg-[#434343] text-white p-5 rounded flex flex-col gap-6">
+        <!-- Search -->
+        <div>
+          <label for="searchInput" class="sr-only">Search products</label>
+          <input id="searchInput" type="text" placeholder="Search products…"
+                 class="w-full bg-[#5A5A5A] text-white rounded px-3 py-2 text-sm"/>
+          <button id="searchBtn"
+                  class="mt-2 w-full bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-600 transition">
+            Search
+          </button>
+        </div>
+
+        <!-- Price Range -->
+        <div>
+          <h3 class="font-semibold mb-1">Filter by Price</h3>
+          <div class="flex gap-2">
+            <input id="priceMin" type="number" placeholder="Min $"
+                   class="w-1/2 bg-[#5A5A5A] text-white rounded px-2 py-1 text-sm"/>
+            <input id="priceMax" type="number" placeholder="Max $"
+                   class="w-1/2 bg-[#5A5A5A] text-white rounded px-2 py-1 text-sm"/>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Product Grid -->
+      <section id="productContainer"
+               class="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- app.js will inject products & Add-to-Cart buttons here -->
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-[#333333] text-white py-20 px-5"></footer>
+
+  <!-- CART COUNT & LOGIN/LOGOUT SCRIPT -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // update cart count
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      document.getElementById('cartCount').innerText = cart.length;
+
+      // login state
+      const email = localStorage.getItem('userLoggedIn');
+      const loginBtn    = document.getElementById('loginBtn');
+      const registerBtn = document.getElementById('registerBtn');
+      if (email) {
+        loginBtn .classList.add('hidden');
+        registerBtn.classList.add('hidden');
+
+        const wrapper = loginBtn.parentNode;
+        const span    = document.createElement('span');
+        span.className = 'text-white text-sm flex items-center space-x-2';
+        span.innerHTML = `
+          <span>Welcome, ${email}</span>
+          <button id="logoutBtn" class="text-blue-300 hover:underline text-sm">Logout</button>
+        `;
+        wrapper.insertBefore(span, wrapper.querySelector('a[href="cart.html"]'));
+
+        document.getElementById('logoutBtn').onclick = () => {
+          localStorage.removeItem('userLoggedIn');
+          location.reload();
+        };
+      }
+    });
+  </script>
+</body>
+</html>

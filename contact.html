@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>万屋 YOROZUYA – Contact Us</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="app.js"></script>
+</head>
+<body class="bg-gray-100 font-sans m-0">
+
+  <!-- Header -->
+  <header class="bg-[#333333] text-white px-5 py-3 flex items-center justify-between">
+    <div class="text-2xl font-bold">万屋 YOROZUYA</div>
+    <nav class="space-x-6">
+      <a href="home.html"     class="text-sm hover:text-gray-300">Home</a>
+      <a href="products.html" class="text-sm hover:text-gray-300">Products</a>
+      <a href="rewards.html"  class="text-sm hover:text-gray-300">Rewards</a>
+      <a href="contact.html"  class="text-sm font-semibold">Contact</a>
+    </nav>
+    <div class="flex items-center space-x-4">
+      <!-- login/register placeholders (will be hidden if user is logged in) -->
+      <a id="loginBtn" href="login.html"
+         class="bg-white text-[#333333] px-3 py-1 rounded text-sm inline-block">
+         Login
+      </a>
+      <a id="registerBtn" href="register.html"
+         class="border border-white text-white px-3 py-1 rounded text-sm inline-block">
+         Register
+      </a>
+
+      <!-- Cart Icon + Badge -->
+      <a href="cart.html" class="relative text-white hover:text-gray-300">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke-width="1.5"
+             stroke="currentColor"
+             class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 
+                   1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 
+                   2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 
+                   14.25L5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 
+                   .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 
+                   .75.75 0 0 1 1.5 0Z"/>
+        </svg>
+        <span id="cartCount"
+              class="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5
+                     flex items-center justify-center rounded-full">
+          0
+        </span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Contact Form -->
+  <main class="py-12 px-5">
+    <h1 class="text-4xl font-bold text-center mb-10">Contact Us</h1>
+    <div class="max-w-xl mx-auto bg-white p-8 rounded shadow-md">
+      <form id="contactForm" action="#" method="POST" class="space-y-6">
+        <div>
+          <label class="block text-sm font-medium mb-1">Name</label>
+          <input 
+            type="text" 
+            name="name" 
+            class="w-full border border-gray-300 rounded px-3 py-2" 
+            required 
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Email</label>
+          <input 
+            type="email" 
+            name="email" 
+            class="w-full border border-gray-300 rounded px-3 py-2" 
+            required 
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Message</label>
+          <textarea 
+            name="message" 
+            class="w-full border border-gray-300 rounded px-3 py-2 h-32" 
+            required
+          ></textarea>
+        </div>
+        <button 
+          type="submit" 
+          class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition"
+        >
+          Send Message
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-[#333333] text-white py-20 px-5">
+    <div class="max-w-2xl mx-auto px-4 text-center">
+      <h2 class="text-2xl font-bold mb-4">Our Location</h2>
+      <div class="inline-flex items-center text-gray-100">
+        <!-- Location Pin SVG -->
+        <svg xmlns="http://www.w3.org/2000/svg"
+             class="w-6 h-6 text-red-500 flex-shrink-0"
+             fill="currentColor"
+             viewBox="0 0 24 24">
+          <path d="M12 2C8.14 2 5 5.14 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.86-3.14-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
+        </svg>
+        <span class="ml-2 text-lg font-medium">
+          51 Bras Basah Rd, Lazada One #03-01, Singapore 189554
+        </span>
+      </div>
+      <img 
+        src="location.png" 
+        alt="Map showing our location" 
+        class="w-full h-auto rounded shadow-md mt-6"
+      />
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1) Cart count badge
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      document.getElementById('cartCount').innerText = cart.length;
+
+      // 2) Login/logout toggle
+      const userEmail = localStorage.getItem('userLoggedIn');
+      const loginBtn    = document.getElementById('loginBtn');
+      const registerBtn = document.getElementById('registerBtn');
+
+      if (userEmail) {
+        // hide login/register buttons
+        loginBtn.classList.add('hidden');
+        registerBtn.classList.add('hidden');
+
+        // insert welcome + logout
+        const wrapper = loginBtn.parentNode;
+        const span    = document.createElement('span');
+        span.className = 'text-white text-sm flex items-center space-x-2';
+        span.innerHTML = `
+          <span>Welcome, ${userEmail}</span>
+          <button id="logoutBtn" class="text-blue-300 hover:underline text-sm">Logout</button>
+        `;
+        wrapper.insertBefore(span, wrapper.querySelector('a[href="cart.html"]'));
+
+        document.getElementById('logoutBtn').onclick = () => {
+          localStorage.removeItem('userLoggedIn');
+          location.reload();
+        };
+      }
+
+      // 3) Contact form submit
+      document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Thank you! Your message has been sent.');
+        this.reset();
+      });
+    });
+  </script>
+
+</body>
+</html>

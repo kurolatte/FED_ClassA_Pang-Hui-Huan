@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>万屋 YOROZUYA – Payment</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+
+  <!-- Payment Card -->
+  <div id="payment-card" class="bg-white rounded-lg shadow-lg max-w-md w-full p-6 space-y-6">
+    <!-- Heading -->
+    <h2 class="text-xl font-semibold">Payment Details</h2>
+
+    <!-- Order Items -->
+    <div>
+      <h3 class="font-medium mb-2">Your Items</h3>
+      <ul id="itemList" class="divide-y divide-gray-200 mb-4">
+        <!-- JS will inject each item here -->
+      </ul>
+    </div>
+
+    <!-- Delivery & Coupon -->
+    <div class="space-y-4">
+      <!-- Delivery Fee -->
+      <div class="flex justify-between">
+        <span>Delivery Fee</span>
+        <span id="deliveryFee" class="font-medium">$5.00</span>
+      </div>
+      <!-- Coupon Code -->
+      <div>
+        <label for="couponCode" class="block text-sm font-medium text-gray-700">Coupon Code</label>
+        <div class="flex gap-2 mt-1">
+          <input
+            type="text"
+            id="couponCode"
+            placeholder="Enter code"
+            class="flex-1 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button id="applyCoupon"
+                  class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            Apply
+          </button>
+        </div>
+        <p id="couponMessage" class="mt-1 text-sm text-red-600"></p>
+      </div>
+    </div>
+
+    <!-- Totals -->
+    <div class="space-y-2">
+      <div class="flex justify-between">
+        <span>Subtotal</span>
+        <span id="subTotal" class="font-medium">$0.00</span>
+      </div>
+      <div class="flex justify-between">
+        <span>Discount</span>
+        <span id="discountAmt" class="font-medium text-green-600">-$0.00</span>
+      </div>
+      <div class="flex justify-between text-lg font-semibold border-t pt-2">
+        <span>Total</span>
+        <span id="grandTotal">$0.00</span>
+      </div>
+    </div>
+
+    <!-- Payment Form -->
+    <form id="paymentForm" class="space-y-4">
+      <div>
+        <label for="cardName" class="block text-sm font-medium text-gray-700">
+          Name on Card
+        </label>
+        <input
+          type="text"
+          id="cardName"
+          name="cardName"
+          placeholder="Full Name"
+          required
+          autocomplete="cc-name"
+          class="mt-1 block w-full border border-gray-300 rounded px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div>
+        <label for="cardNumber" class="block text-sm font-medium text-gray-700">
+          Card Number
+        </label>
+        <input
+          type="text"
+          id="cardNumber"
+          name="cardNumber"
+          placeholder="1234567812345678"
+          minlength="16" maxlength="16"
+          pattern="\d{16}"
+          required
+          inputmode="numeric"
+          autocomplete="cc-number"
+          title="Enter exactly 16 digits"
+          class="mt-1 block w-full border border-gray-300 rounded px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="expDate" class="block text-sm font-medium text-gray-700">
+            Expiry Date
+          </label>
+          <input
+            type="text"
+            id="expDate"
+            name="expDate"
+            placeholder="MM/YY"
+            maxlength="5"
+            required
+            inputmode="numeric"
+            pattern="\d{2}/\d{2}"
+            autocomplete="cc-exp"
+            class="mt-1 block w-full border border-gray-300 rounded px-3 py-2
+                   focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div>
+          <label for="cvv" class="block text-sm font-medium text-gray-700">CVV</label>
+          <input
+            type="text"
+            id="cvv"
+            name="cvv"
+            placeholder="123"
+            maxlength="4"
+            required
+            inputmode="numeric"
+            pattern="\d{3,4}"
+            autocomplete="cc-csc"
+            class="mt-1 block w-full border border-gray-300 rounded px-3 py-2
+                   focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+      </div>
+      <button
+        type="submit"
+        class="w-full bg-black text-white py-2 rounded text-sm font-medium
+               hover:bg-gray-800 transition"
+      >
+        Pay Now
+      </button>
+    </form>
+  </div>
+
+  <!-- Confirmation Message -->
+  <div id="confirmation" class="hidden bg-white rounded-lg shadow-lg max-w-md w-full p-6 text-center">
+    <h2 class="text-2xl font-semibold mb-4 text-green-600">Purchase Complete!</h2>
+    <p class="mb-2">Thank you for your order.</p>
+    <p class="mb-4">Order number:</p>
+    <p id="orderNumber" class="text-xl font-mono mb-6"></p>
+    <p class="text-sm text-gray-600">Redirecting to home...</p>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const DELIVERY_FEE = 5;
+
+      const itemList      = document.getElementById('itemList');
+      const subTotalEl    = document.getElementById('subTotal');
+      const deliveryFeeEl = document.getElementById('deliveryFee');
+      const discountEl    = document.getElementById('discountAmt');
+      const grandEl       = document.getElementById('grandTotal');
+      const couponInput   = document.getElementById('couponCode');
+      const couponMsg     = document.getElementById('couponMessage');
+
+      let subtotal = 0, deliveryFee = DELIVERY_FEE, discount = 0;
+
+      // 1) Render cart items & calculate subtotal
+      cart.forEach(item => {
+        subtotal += item.price || 0;
+        const li = document.createElement('li');
+        li.className = 'flex justify-between py-2';
+        li.innerHTML = `<span>${item.title}</span><span>$${(item.price||0).toFixed(2)}</span>`;
+        itemList.appendChild(li);
+      });
+      subTotalEl.innerText    = '$' + subtotal.toFixed(2);
+      deliveryFeeEl.innerText = '$' + DELIVERY_FEE.toFixed(2);
+
+      // 2) Update grand total display
+      function updateTotal() {
+        const total = subtotal + deliveryFee - discount;
+        grandEl.innerText = '$' + total.toFixed(2);
+      }
+      updateTotal();
+
+      // 3) Coupon application
+      document.getElementById('applyCoupon').onclick = () => {
+        const code = couponInput.value.trim().toUpperCase();
+        couponMsg.textContent = '';
+        deliveryFee = DELIVERY_FEE;
+        discount    = 0;
+
+        switch(code) {
+          case 'FREEDEL': deliveryFee = 0; break;
+          case 'OFF2':    discount = 2; break;
+          case 'OFF5':    discount = 5; break;
+          case 'OFF10':   discount = 10; break;
+          default:        couponMsg.textContent = 'Invalid code.';
+        }
+
+        deliveryFeeEl.innerText = '$' + deliveryFee.toFixed(2);
+        discountEl.innerText    = '-$' + discount.toFixed(2);
+        updateTotal();
+      };
+
+      // 4) Handle payment submission
+      document.getElementById('paymentForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const orderNum = 'ORD-' + Date.now().toString().slice(-8);
+        document.getElementById('orderNumber').innerText = orderNum;
+        document.getElementById('payment-card').classList.add('hidden');
+        document.getElementById('confirmation').classList.remove('hidden');
+        localStorage.removeItem('cart');
+        setTimeout(() => window.location.href = 'home.html', 3000);
+      });
+    });
+  </script>
+</body>
+</html>
