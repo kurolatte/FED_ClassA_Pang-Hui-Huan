@@ -30,7 +30,6 @@
       <a id="registerBtn" href="register.html"
          class="border border-white text-white px-3 py-1 rounded text-sm">Register</a>
 
-      <!-- once logged in, we swap these in -->
       <span id="welcomeMsg" class="hidden text-white text-sm"></span>
       <button id="logoutBtn" class="hidden text-blue-300 hover:underline text-sm">
         Logout
@@ -90,7 +89,6 @@
           <!-- Stage -->
           <div id="stage"
                class="bg-[#01bfae] w-[450px] h-[450px] mx-auto mb-5 border border-gray-200 relative select-none">
-            <!-- JS will inject tiles here -->
           </div>
         </div>
 
@@ -120,14 +118,13 @@
   </main>
 
   <!-- Footer -->
-  <footer class="bg-[#333333] text-white py-20 mt-15">
-    <!-- footer content -->
+  <footer class="bg-[#333333] text-white py-20 mt-20">
   </footer>
 
-  <!-- 1) 2048 core + rewards logic -->
+  <!-- 2048 Game -->
   <script src="game2048.js"></script>
 
-  <!-- 2) Define per-email play-limit helpers -->
+  <!-- Define per-email play-limit -->
   <script>
     function hasPlayedToday(email) {
       const key   = `lastPlayDate_${email}`;
@@ -142,7 +139,7 @@
     }
   </script>
 
-  <!-- 3) Leaderboard renderer -->
+  <!-- Leaderboard renderer -->
   <script>
     function renderLeaderboard(lb) {
       const ul = document.getElementById('leaderboard-list');
@@ -164,10 +161,9 @@
     });
   </script>
 
-  <!-- 4) Page-specific behavior (login state, cart badge, per-email limit) -->
+  <!-- login state, cart, per-email limit -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // -- cart badge
       document.getElementById('cartCount').innerText =
         JSON.parse(localStorage.getItem('cart') || '[]').length;
 
@@ -211,7 +207,7 @@
         document.body.appendChild(cover);
       };
 
-      // -- submit-score: record once/day, then leaderboard logic inside game2048.js
+      // -- submit-score: record once/day
       const submitBtn = document.getElementById('submit-score');
       submitBtn && submitBtn.addEventListener('click', () => {
         const email = localStorage.getItem('userLoggedIn');

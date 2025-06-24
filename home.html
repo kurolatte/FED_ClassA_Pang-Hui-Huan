@@ -37,7 +37,7 @@
          Register
       </a>
       <a href="cart.html" class="relative text-white hover:text-gray-300">
-        <!-- cart svg omitted -->
+      
         <span id="cartCount"
               class="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5
                      flex items-center justify-center rounded-full">
@@ -47,10 +47,9 @@
     </div>
   </header>
 
-  <!-- empty flex-grow for visual balance -->
   <main class="flex-grow min-h-[60vh]"></main>>
 
-  <!-- FOOTER (always at bottom) -->
+  <!-- FOOTER -->
   <footer class="bg-[#333333] text-white py-10 px-5">
     <h2 class="text-2xl font-bold mb-6">About 万屋 YOROZUYA</h2>
     <div class="space-y-4 max-w-3xl mx-auto">
@@ -78,10 +77,9 @@
     </div>
   </footer>
 
-  <!-- CART COUNT & LOGIN-STATE SCRIPT -->
+  <!-- CART COUNT -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // cart badge
       const cart = JSON.parse(localStorage.getItem('cart') || '[]');
       document.getElementById('cartCount').innerText = cart.length;
 

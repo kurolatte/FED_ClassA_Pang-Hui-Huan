@@ -17,18 +17,15 @@
     <div>
       <h3 class="font-medium mb-2">Your Items</h3>
       <ul id="itemList" class="divide-y divide-gray-200 mb-4">
-        <!-- JS will inject each item here -->
       </ul>
     </div>
 
     <!-- Delivery & Coupon -->
     <div class="space-y-4">
-      <!-- Delivery Fee -->
       <div class="flex justify-between">
         <span>Delivery Fee</span>
         <span id="deliveryFee" class="font-medium">$5.00</span>
       </div>
-      <!-- Coupon Code -->
       <div>
         <label for="couponCode" class="block text-sm font-medium text-gray-700">Coupon Code</label>
         <div class="flex gap-2 mt-1">
@@ -47,7 +44,6 @@
       </div>
     </div>
 
-    <!-- Totals -->
     <div class="space-y-2">
       <div class="flex justify-between">
         <span>Subtotal</span>
@@ -169,7 +165,7 @@
 
       let subtotal = 0, deliveryFee = DELIVERY_FEE, discount = 0;
 
-      // 1) Render cart items & calculate subtotal
+      // Render cart items & calculate subtotal
       cart.forEach(item => {
         subtotal += item.price || 0;
         const li = document.createElement('li');
@@ -180,14 +176,14 @@
       subTotalEl.innerText    = '$' + subtotal.toFixed(2);
       deliveryFeeEl.innerText = '$' + DELIVERY_FEE.toFixed(2);
 
-      // 2) Update grand total display
+      // Update grand total display
       function updateTotal() {
         const total = subtotal + deliveryFee - discount;
         grandEl.innerText = '$' + total.toFixed(2);
       }
       updateTotal();
 
-      // 3) Coupon application
+      // Coupon application
       document.getElementById('applyCoupon').onclick = () => {
         const code = couponInput.value.trim().toUpperCase();
         couponMsg.textContent = '';
@@ -207,7 +203,7 @@
         updateTotal();
       };
 
-      // 4) Handle payment submission
+      // Handle payment submission
       document.getElementById('paymentForm').addEventListener('submit', e => {
         e.preventDefault();
         const orderNum = 'ORD-' + Date.now().toString().slice(-8);

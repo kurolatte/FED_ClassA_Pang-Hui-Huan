@@ -1,0 +1,29 @@
+// server.js
+const express    = require('express');
+const bodyParser = require('body-parser');
+const cors       = require('cors');
+const path       = require('path');
+const data       = require('./data/data.js');
+
+const app = express();
+
+app.use(bodyParser.json());
+app.use(cors());
+
+app.use(express.static(path.join(__dirname, '..')));
+
+app.get('/products', (req, res) => {
+  res.json(data.products);
+});
+
+app.get('/products/:id', (req, res) => {
+  const id = +req.params.id;
+  const product = data.products.find(p => p.id === id);
+  if (!product) return res.status(404).json({ error: 'Not found' });
+  res.json(product);
+});
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
+});

@@ -19,7 +19,7 @@
       <a href="contact.html"  class="text-sm font-semibold">Contact</a>
     </nav>
     <div class="flex items-center space-x-4">
-      <!-- login/register placeholders (will be hidden if user is logged in) -->
+      <!-- login/register placeholders hidden if user is logged in -->
       <a id="loginBtn" href="login.html"
          class="bg-white text-[#333333] px-3 py-1 rounded text-sm inline-block">
          Login
@@ -29,7 +29,7 @@
          Register
       </a>
 
-      <!-- Cart Icon + Badge -->
+      <!-- Cart Icon -->
       <a href="cart.html" class="relative text-white hover:text-gray-300">
         <svg xmlns="http://www.w3.org/2000/svg"
              fill="none"
@@ -119,14 +119,14 @@
     </div>
   </footer>
 
-  <!-- Scripts -->
+
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // 1) Cart count badge
+      // Cart count badge
       const cart = JSON.parse(localStorage.getItem('cart') || '[]');
       document.getElementById('cartCount').innerText = cart.length;
 
-      // 2) Login/logout toggle
+      // Login/logout toggle
       const userEmail = localStorage.getItem('userLoggedIn');
       const loginBtn    = document.getElementById('loginBtn');
       const registerBtn = document.getElementById('registerBtn');
@@ -136,7 +136,7 @@
         loginBtn.classList.add('hidden');
         registerBtn.classList.add('hidden');
 
-        // insert welcome + logout
+
         const wrapper = loginBtn.parentNode;
         const span    = document.createElement('span');
         span.className = 'text-white text-sm flex items-center space-x-2';
@@ -152,7 +152,7 @@
         };
       }
 
-      // 3) Contact form submit
+
       document.getElementById('contactForm').addEventListener('submit', function(e) {
         e.preventDefault();
         alert('Thank you! Your message has been sent.');
