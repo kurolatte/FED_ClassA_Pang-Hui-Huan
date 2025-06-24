@@ -1,5 +1,22 @@
 const API_BASE = 'http://localhost:3000';
 
+function getCart() {
+  return JSON.parse(localStorage.getItem("cart") || "[]");
+}
+function saveCart(cart) {
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
+function updateCartCount() {
+  const countEl = document.getElementById("cartCount");
+  if (countEl) countEl.innerText = getCart().length;
+}
+function addToCart(item) {
+  const cart = getCart();
+  cart.push(item);
+  saveCart(cart);
+  updateCartCount();
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   const details = document.getElementById('productDetails');
   const id      = new URLSearchParams(location.search).get('id');
@@ -30,6 +47,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         Add to Cart
       </button>
     `;
+
+    document
+      .getElementById('addToCartBtn')
+      .addEventListener('click', () => {
+        addToCart({ id: Number(id), title, thumbnail, price });
+      });
+      
   } catch {
     details.innerHTML = `
       <p class="text-red-500 text-center font-semibold">

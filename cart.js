@@ -1,4 +1,3 @@
-// 1) Helpers to manage the cart in localStorage
 function getCart() {
   return JSON.parse(localStorage.getItem("cart") || "[]");
 }
@@ -9,7 +8,6 @@ function updateCartBadge() {
   document.getElementById("cartCount").innerText = getCart().length;
 }
 
-// 2) Render the cart
 function renderCart() {
   const cart = getCart();
   const container = document.getElementById("cartContainer");
@@ -28,7 +26,6 @@ function renderCart() {
     return;
   }
 
-  // Build table of items
   let total = 0;
   const rows = cart.map((p, i) => {
     total += p.price;
@@ -49,7 +46,7 @@ function renderCart() {
     `;
   }).join("");
 
-  // Render
+
   container.innerHTML = `
     ${rows}
     <div class="border-t border-gray-600 mt-6 pt-4">
@@ -63,7 +60,6 @@ function renderCart() {
     </div>
   `;
 
-  // Wire up Remove buttons
   container.querySelectorAll(".removeBtn").forEach(btn => {
     btn.addEventListener("click", e => {
       const idx = +e.currentTarget.dataset.index;
@@ -75,7 +71,6 @@ function renderCart() {
   });
 }
 
-// 3) On load
 document.addEventListener("DOMContentLoaded", () => {
   updateCartBadge();
   renderCart();

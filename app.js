@@ -1,7 +1,5 @@
-// 1) API base
 const API_BASE = 'http://localhost:3000';
 
-// 2) Cart helpers
 function getCart() {
   return JSON.parse(localStorage.getItem("cart") || "[]");
 }
@@ -19,7 +17,6 @@ function updateCartCount() {
   document.getElementById("cartCount").innerText = count;
 }
 
-// 3) Fetch products
 async function fetchAllProducts() {
   const res = await fetch(`${API_BASE}/products`);
   if (!res.ok) throw new Error(res.status);
@@ -27,7 +24,6 @@ async function fetchAllProducts() {
 }
 
 async function fetchProducts(q) {
-  // currently your API doesn't support q, so this just returns all
   const products = await fetchAllProducts();
   if (q) {
     const term = q.toLowerCase();
@@ -39,10 +35,9 @@ async function fetchProducts(q) {
   return products;
 }
 
-// 4) Render grid
 let lastProducts = [];
 function renderProducts(items) {
-  lastProducts = items;  // remember for Add-to-Cart lookup
+  lastProducts = items; 
   const cont = document.getElementById("productContainer");
   cont.innerHTML = "";
 
@@ -55,7 +50,6 @@ function renderProducts(items) {
   }
 
   items.forEach(p => {
-    // wrap whole card in a link
     const link = document.createElement("a");
     link.href      = `product.html?id=${p.id}`;
     link.className = "block bg-[#5A5A5A] p-4 rounded border border-[#434343] text-white flex flex-col hover:shadow-lg transition";
@@ -71,7 +65,6 @@ function renderProducts(items) {
       </button>
     `;
 
-    // keep Add-to-Cart from navigating
     link.querySelector("button").addEventListener("click", e => {
       e.preventDefault();
       addToCart(p);
@@ -81,22 +74,19 @@ function renderProducts(items) {
   });
 }
 
-// 5) Main
 document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("searchInput");
   const btn   = document.getElementById("searchBtn");
   const minEl = document.getElementById("priceMin");
   const maxEl = document.getElementById("priceMax");
 
-  // show initial cart count
   updateCartCount();
 
-  // load all on start
   fetchAllProducts()
     .then(renderProducts)
     .catch(console.error);
 
-  // search + filter
+  // search & filter
   async function doSearch() {
     btn.disabled = true;
     try {

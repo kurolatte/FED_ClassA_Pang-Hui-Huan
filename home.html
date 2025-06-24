@@ -8,26 +8,22 @@
   <script defer src="app.js"></script>
   <style>
     body.home-bg {
-      background: url('Yorozuya gintama shop house.png');
-      background-position: center top;
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-attachment: fixed;
+      background: url('Yorozuya gintama shop house.png') center top / cover fixed no-repeat;
     }
   </style>
 </head>
 <body class="home-bg font-sans m-0 flex flex-col min-h-screen text-white">
 
-  <!-- HEADER -->
-  <header class="bg-[#333333]/80 px-5 py-3 flex items-center justify-between">
+  <!-- Header -->
+  <header class="bg-[#333333] px-5 py-3 flex flex-wrap items-center justify-between">
     <div class="text-2xl font-bold">万屋 YOROZUYA</div>
-    <nav class="space-x-6">
+    <nav class="mt-2 sm:mt-0 space-x-6">
       <a href="home.html"     class="text-sm hover:text-gray-300">Home</a>
       <a href="products.html" class="text-sm hover:text-gray-300">Products</a>
       <a href="rewards.html"  class="text-sm hover:text-gray-300">Rewards</a>
       <a href="contact.html"  class="text-sm hover:text-gray-300">Contact</a>
     </nav>
-    <div class="flex items-center space-x-4">
+    <div class="flex items-center space-x-4 relative">
       <a id="loginBtn" href="login.html"
          class="bg-white text-[#333333] px-3 py-1 rounded text-sm">
          Login
@@ -37,19 +33,31 @@
          Register
       </a>
       <a href="cart.html" class="relative text-white hover:text-gray-300">
-      
+        <!-- cart SVG -->
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+             class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 
+                   1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218
+                   c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 
+                   0 0 0-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25
+                   a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 
+                   0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"/>
+        </svg>
         <span id="cartCount"
-              class="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5
-                     flex items-center justify-center rounded-full">
+              class="absolute -top-2 -right-2 bg-red-500 text-white text-xs
+                     w-5 h-5 flex items-center justify-center rounded-full">
           0
         </span>
       </a>
     </div>
   </header>
 
-  <main class="flex-grow min-h-[60vh]"></main>>
+  <!-- Main placeholder -->
+  <main class="flex-grow min-h-[60vh]"></main>
 
-  <!-- FOOTER -->
+  <!-- Footer -->
   <footer class="bg-[#333333] text-white py-10 px-5">
     <h2 class="text-2xl font-bold mb-6">About 万屋 YOROZUYA</h2>
     <div class="space-y-4 max-w-3xl mx-auto">
@@ -60,7 +68,7 @@
         (for a fair fee) and sell anything you can imagine.
       </p>
       <p>
-        Founded in 20XX by a odd-job enthusiasts, who started out fetching
+        Founded in 20XX by an odd-job enthusiast, who started out fetching
         groceries, repairing gadgets, and sourcing rare anime merchandise. Word spread:
         whether you need event staffing at the last minute, a custom cosplay prop,
         or a simple errand run, you bring the request—we bring the results.
@@ -77,18 +85,17 @@
     </div>
   </footer>
 
-  <!-- CART COUNT -->
+  <!-- CART COUNT & LOGIN/LOGOUT -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const cart = JSON.parse(localStorage.getItem('cart') || '[]');
       document.getElementById('cartCount').innerText = cart.length;
 
-      // login/logout toggle
       const email       = localStorage.getItem('userLoggedIn');
       const loginBtn    = document.getElementById('loginBtn');
       const registerBtn = document.getElementById('registerBtn');
       if (email) {
-        loginBtn .classList.add('hidden');
+        loginBtn.classList.add('hidden');
         registerBtn.classList.add('hidden');
         const wrapper = loginBtn.parentNode;
         const span    = document.createElement('span');
@@ -105,5 +112,6 @@
       }
     });
   </script>
+
 </body>
 </html>

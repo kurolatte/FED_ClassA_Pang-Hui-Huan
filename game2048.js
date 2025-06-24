@@ -1,5 +1,4 @@
-// 2048 core & rewards integration (with fixed right/down merging)
-
+// from https://gist.github.com/kishi001/0e614ff8ee7e3ad55946
 var gameObj = {
   points: { score: 0 },
   stage: [],
@@ -147,7 +146,7 @@ var gameObj = {
   }
 };
 
-// Swipe controller (unchanged)
+// Swipe controller
 var controller = (function(){
   var startX=0, startY=0, ready=false;
   return {
@@ -163,7 +162,7 @@ var controller = (function(){
   };
 })();
 
-// --- New Rewards logic: per-email 1 play/day + 30% coupon ---
+// Rewards logic: per-email 1 play/day + 30% coupon 
 const COUPONS = [
   { c: 'FREEDEL', d: 'Free delivery' },
   { c: 'OFF2',    d: '$2 off'       },
@@ -171,7 +170,6 @@ const COUPONS = [
   { c: 'OFF10',   d: '$10 off'      },
 ];
 
-// helpers that take an email
 function hasPlayedTodayFor(email) {
   const key   = `lastPlayDate_${email}`;
   const last  = localStorage.getItem(key);
@@ -221,12 +219,11 @@ window.onload = function() {
   }
 };
 
-// Start button: enforce per-email once/day
+// Start button: per-email once/day
 document.getElementById('start-game').onclick = () => {
   const email   = localStorage.getItem('userLoggedIn');
   const isAdmin = (email === 'admin@yorozuya.com');
 
-  // clear old cover
   document.querySelectorAll('.cover').forEach(c=>c.remove());
 
   if (!email) {
@@ -288,7 +285,6 @@ document.getElementById('submit-score').onclick = () => {
   localStorage.setItem('leaderboard', JSON.stringify(board));
   if (typeof renderLeaderboard === 'function') renderLeaderboard(board);
 
-  // remove cover
   document.querySelectorAll('.cover').forEach(c=>c.remove());
 };
 

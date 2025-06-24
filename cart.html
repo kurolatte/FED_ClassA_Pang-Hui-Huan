@@ -9,7 +9,7 @@
 </head>
 <body class="bg-[#5A5A5A] font-sans m-0">
 
-  <!-- Header (cart icon now points here) -->
+  <!-- Header & cart icon from https://heroicons.com/-->
   <header class="bg-[#434343] text-white px-5 py-3 flex items-center justify-between">
     <div class="text-2xl font-bold">万屋 YOROZUYA</div>
     <nav class="space-x-6">
@@ -51,18 +51,17 @@
   <main class="py-12 px-5">
     <h1 class="text-4xl font-bold text-center text-white mb-8">Your Cart</h1>
     <div id="cartContainer" class="max-w-3xl mx-auto bg-[#5A5A5A] p-6 rounded shadow-lg">
-      <!-- cart.js will inject cart items here -->
     </div>
   </main>
 
-  <!-- LOGIN/LOGOUT & CART COUNT SCRIPT -->
+  <!-- LOGIN/LOGOUT & CART COUNT -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // 1) Cart count
+      // Cart count
       const cart = JSON.parse(localStorage.getItem('cart') || '[]');
       document.getElementById('cartCount').innerText = cart.length;
 
-      // 2) Login state
+      // Login state
       const userEmail = localStorage.getItem('userLoggedIn');
       const loginBtn    = document.getElementById('loginBtn');
       const registerBtn = document.getElementById('registerBtn');

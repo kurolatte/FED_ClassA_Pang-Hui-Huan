@@ -9,21 +9,20 @@
 </head>
 <body class="bg-gray-100 font-sans m-0">
 
-  <!-- Header -->
-  <header class="bg-[#333333] text-white px-5 py-3 flex items-center justify-between">
+  <!-- Header/Nav -->
+  <header class="bg-[#333333] text-white px-5 py-3 flex flex-wrap items-center justify-between">
     <!-- Logo -->
     <div class="text-2xl font-bold">万屋 YOROZUYA</div>
 
     <!-- Main nav -->
-    <nav class="space-x-6">
+    <nav class="mt-2 sm:mt-0 space-x-6">
       <a href="home.html"     class="text-sm hover:text-gray-300">Home</a>
       <a href="products.html" class="text-sm hover:text-gray-300">Products</a>
-      <a href="rewards.html"  class="text-sm font-semibold">Rewards</a>
+      <a href="rewards.html"  class="text-sm font-semibold hover:text-gray-300">Rewards</a>
       <a href="contact.html"  class="text-sm hover:text-gray-300">Contact</a>
     </nav>
 
-    <!-- User/nav actions -->
-    <div id="userNav" class="flex items-center space-x-4">
+    <div id="userNav" class="flex items-center space-x-4 relative">
       <!-- login/register -->
       <a id="loginBtn" href="login.html"
          class="bg-white text-[#333333] px-3 py-1 rounded text-sm">Login</a>
@@ -69,26 +68,25 @@
         Start 2048
       </button>
 
-      <!-- Game Area (hidden until start) -->
       <div id="game-area" class="hidden relative">
 
         <!-- Game container -->
-        <div class="mx-auto w-[452px] pt-[100px] relative overflow-visible">
+        <div class="mx-auto w-[90vw] max-w-[452px] pt-[100px] relative overflow-visible">
           <!-- Logo -->
-          <div class="absolute top-0 left-[10px] text-[60px] font-bold text-[#d13100] z-[1001] select-none">
+          <div class="absolute top-0 left-[10px] text-[48px] sm:text-[60px] font-bold text-[#d13100] z-[1001] select-none">
             2048
           </div>
           <!-- Score bar -->
           <div class="absolute top-0 right-[10px] bg-white px-3 py-2 rounded flex items-center gap-2 z-[1001]">
             <span class="text-sm">Score:</span>
-            <span id="score" class="text-[50px]">0</span>
+            <span id="score" class="text-[36px] sm:text-[50px]">0</span>
             <div id="addScore"
-                 class="absolute top-[4px] right-0 text-[30px] text-gray-500 opacity-0 transition-opacity">
+                 class="absolute top-[4px] right-0 text-[24px] sm:text-[30px] text-gray-500 opacity-0 transition-opacity">
             </div>
           </div>
-          <!-- Stage -->
+
           <div id="stage"
-               class="bg-[#01bfae] w-[450px] h-[450px] mx-auto mb-5 border border-gray-200 relative select-none">
+               class="bg-[#01bfae] w-full max-w-[450px] h-[450px] mx-auto mb-5 border border-gray-200 relative select-none">
           </div>
         </div>
 
@@ -117,57 +115,18 @@
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer class="bg-[#333333] text-white py-20 mt-20">
-  </footer>
+  <footer class="bg-[#333333] text-white py-40"></footer>
 
-  <!-- 2048 Game -->
+  <!-- 2048 Game Logic -->
   <script src="game2048.js"></script>
 
-  <!-- Define per-email play-limit -->
-  <script>
-    function hasPlayedToday(email) {
-      const key   = `lastPlayDate_${email}`;
-      const last  = localStorage.getItem(key);
-      const today = new Date().toISOString().slice(0,10);
-      return last === today;
-    }
-    function markPlayedToday(email) {
-      const key   = `lastPlayDate_${email}`;
-      const today = new Date().toISOString().slice(0,10);
-      localStorage.setItem(key, today);
-    }
-  </script>
-
-  <!-- Leaderboard renderer -->
-  <script>
-    function renderLeaderboard(lb) {
-      const ul = document.getElementById('leaderboard-list');
-      ul.innerHTML = '';
-      if (!lb.length) {
-        ul.innerHTML = '<li class="text-sm italic">No scores yet.</li>';
-        return;
-      }
-      lb.forEach(({email, score}) => {
-        const li = document.createElement('li');
-        li.textContent = `${email}: ${score}`;
-        li.className = 'text-sm';
-        ul.appendChild(li);
-      });
-    }
-    document.addEventListener('DOMContentLoaded', () => {
-      const board = JSON.parse(localStorage.getItem('leaderboard') || '[]');
-      renderLeaderboard(board);
-    });
-  </script>
-
-  <!-- login state, cart, per-email limit -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // cart count
       document.getElementById('cartCount').innerText =
         JSON.parse(localStorage.getItem('cart') || '[]').length;
 
-      // -- login/logout UI
+      // login/logout
       const email       = localStorage.getItem('userLoggedIn');
       const loginBtn    = document.getElementById('loginBtn');
       const registerBtn = document.getElementById('registerBtn');
@@ -185,35 +144,52 @@
         };
       }
 
-      // -- start button: login & per-email once/day
+      // per-email play limit
+      function hasPlayedToday(email) {
+        const key   = `lastPlayDate_${email}`;
+        const last  = localStorage.getItem(key);
+        const today = new Date().toISOString().slice(0,10);
+        return last === today;
+      }
+      function markPlayedToday(email) {
+        const key   = `lastPlayDate_${email}`;
+        const today = new Date().toISOString().slice(0,10);
+        localStorage.setItem(key, today);
+      }
+
+      // start game
       const startBtn = document.getElementById('start-game');
-      const isAdmin  = (email === 'admin@yorozuya.com');
       startBtn.onclick = () => {
         if (!email) {
           alert('Please log in to play and earn coupons.');
           return window.location.href = 'login.html';
         }
-        if (!isAdmin && hasPlayedToday(email)) {
+        if (email !== 'admin@yorozuya.com' && hasPlayedToday(email)) {
           alert('You have already played today. Come back tomorrow!');
           return;
         }
-        // show game
         document.getElementById('game-area').classList.remove('hidden');
         document.getElementById('submit-score').disabled = false;
-        // inject semi-transparent cover
-        document.querySelectorAll('.cover').forEach(c=>c.remove());
-        const cover = document.createElement('div');
-        cover.className = 'cover fixed inset-0 w-full h-full z-[999] opacity-10 pointer-events-none';
-        document.body.appendChild(cover);
       };
 
-      // -- submit-score: record once/day
-      const submitBtn = document.getElementById('submit-score');
-      submitBtn && submitBtn.addEventListener('click', () => {
-        const email = localStorage.getItem('userLoggedIn');
+      // submit score
+      document.getElementById('submit-score')?.addEventListener('click', () => {
         markPlayedToday(email);
-        // the rest of your coupon & leaderboard code in game2048.js will run afterwards
       });
+
+      // leaderboard
+      const board = JSON.parse(localStorage.getItem('leaderboard') || '[]');
+      const ul = document.getElementById('leaderboard-list');
+      if (!board.length) {
+        ul.innerHTML = '<li class="italic text-sm">No scores yet.</li>';
+      } else {
+        board.forEach(({email, score}) => {
+          const li = document.createElement('li');
+          li.textContent = `${email}: ${score}`;
+          li.className = 'text-sm';
+          ul.appendChild(li);
+        });
+      }
     });
   </script>
 </body>
