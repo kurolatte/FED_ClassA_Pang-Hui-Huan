@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:3000';
+const API_BASE = '/api';
 
 function getCart() {
   return JSON.parse(localStorage.getItem("cart") || "[]");
