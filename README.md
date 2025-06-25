@@ -21,7 +21,8 @@ This site is aimed at **anime fans** and casual shoppers who want a fun, interac
 - As a **user**, I want to send a message via a contact form and receive feedback on success or errors.
 
 > **Wireframes & Mockups**  
-> - Figma: [Yorozuya Store Wireframes](https://www.figma.com/file/XXXXXXXXXhttps://www.figma.com/design/WDgYlfYRiXNg5Y3SpLGhqt/Untitled?node-id=0-1&t=FGhpqNph56TPiWxH-1)  
+> - Figma: [Yorozuya Store Wireframes](https://www.figma.com/design/WDgYlfYRiXNg5Y3SpLGhqt/Untitled?node-id=0-1&t=FGhpqNph56TPiWxH-1)
+
 
 ---
 
