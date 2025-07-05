@@ -107,5 +107,4 @@ This site is aimed at **anime fans** and casual shoppers who want a fun, interac
 ### Acknowledgements
 
 - Inspired by the *Gintama* 万事屋 concept.  
-- 2048game from https://gist.github.com/kishi001/0e614ff8ee7e3ad55946
 -------------------------------------------------------------------------
