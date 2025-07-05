@@ -96,7 +96,9 @@ This site is aimed at **anime fans** and casual shoppers who want a fun, interac
 
 ### Content
 
-- Product data & placeholders from [DummyJSON](https://dummyjson.com).  
+- Product data & placeholders from [DummyJSON](https://dummyjson.com).
+- Game2048 from [Game2048](https://gist.github.com/kishi001/0e614ff8ee7e3ad55946).
+- Icons from [Heroicons](https://heroicons.com).
 
 ### Media
 
